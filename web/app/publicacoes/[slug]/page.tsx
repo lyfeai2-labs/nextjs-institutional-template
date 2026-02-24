@@ -40,6 +40,7 @@ export default async function PublicacaoPage({ params }: { params: { slug: strin
   const { data, content } = matter(fileContent);
   const processedContent = await remark().use(html).process(content);
   const contentHtml = processedContent.toString();
+    const dateStr = String(data.date || '');
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
       <Link href="/publicacoes" className="text-blue-700 hover:underline text-sm mb-8 block">
@@ -68,7 +69,7 @@ export default async function PublicacaoPage({ params }: { params: { slug: strin
         </div>
       )}
       <h1 className="text-4xl font-bold text-gray-900 mb-3">{data.title}</h1>
-      <p className="text-sm text-gray-500 mb-10">{data.date}</p>
+              <p className="text-sm text-gray-500 mb-10">{new Date(dateStr).toLocaleDateString('pt-BR')}</p>
       <article
         className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-img:rounded-xl prose-img:shadow-md"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
