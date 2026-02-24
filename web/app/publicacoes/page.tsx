@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import Image from 'next/image';
+import { features } from '../config/features';
 
 type PostMeta = {
   slug: string;
@@ -38,17 +39,27 @@ function getAllPosts(): PostMeta[] {
 }
 
 export default function Publicacoes() {
+  if (!features.publicacoes) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-slate-600">
+          Este módulo não está disponível no plano atual.
+        </p>
+      </main>
+    );
+  }
+
   const posts = getAllPosts();
   return (
     <main className="px-8 pb-12 max-w-6xl mx-auto">
-      <h1 className="text-4xl font-semibold text-gray-900 mb-8">Publicacoes</h1>
+      <h1 className="text-4xl font-semibold text-gray-900 mb-8">Publicações</h1>
       {posts.length === 0 ? (
-        <p className="text-gray-600">Nenhuma publicacao encontrada.</p>
+        <p className="text-gray-600">Nenhuma publicação encontrada.</p>
       ) : (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <Link key={post.slug} href={`/publicacoes/${post.slug}`}>
-              <article className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col">
+              <article className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
                 {post.coverImage && (
                   <div className="relative w-full h-48">
                     <Image
@@ -59,14 +70,12 @@ export default function Publicacoes() {
                     />
                   </div>
                 )}
-                <div className="p-4 flex flex-col flex-1">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                <div className="p-5">
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
                     {post.title}
                   </h2>
-                  <p className="text-gray-700 text-base mb-3 flex-1 line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                  <p className="text-sm text-gray-500">{post.date}</p>
+                  <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
+                  <span className="text-xs text-gray-400">{post.date}</span>
                 </div>
               </article>
             </Link>
