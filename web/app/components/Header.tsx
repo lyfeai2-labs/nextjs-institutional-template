@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { features } from '../config/features';
 
 export default function Header() {
   return (
@@ -10,21 +11,29 @@ export default function Header() {
         <Link href="/o-que-somos" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
           O que somos
         </Link>
-        <Link href="/pesquisa" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
-          Pesquisa
-        </Link>
-        <Link href="/biblioteca" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
-          Biblioteca
-        </Link>
-        <Link href="/parceiros" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
-          Parceiros
-        </Link>
+        {features.pesquisa && (
+          <Link href="/pesquisa" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
+            Pesquisa
+          </Link>
+        )}
+        {features.biblioteca && (
+          <Link href="/biblioteca" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
+            Biblioteca
+          </Link>
+        )}
+        {features.parceiros && (
+          <Link href="/parceiros" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
+            Parceiros
+          </Link>
+        )}
         <Link href="/sobre" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
           Sobre
         </Link>
-        <Link href="/publicacoes" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
-          Publicacoes
-        </Link>
+        {features.publicacoes && (
+          <Link href="/publicacoes" className="text-gray-900 hover:text-blue-700 transition-colors font-medium">
+            Publicacoes
+          </Link>
+        )}
       </nav>
     </header>
   )
