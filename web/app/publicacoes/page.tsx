@@ -30,7 +30,7 @@ function getAllPosts(): PostMeta[] {
       return {
         slug: data.slug || filename.replace('.md', ''),
         title: data.title || '',
-        date: data.date || '',
+              date: String(data.date || ''),
         excerpt: data.excerpt || '',
         coverImage: data.coverImage || '',
       };
@@ -75,7 +75,7 @@ export default function Publicacoes() {
                     {post.title}
                   </h2>
                   <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
-                  <span className="text-xs text-gray-400">{post.date}</span>
+                            <span className="text-xs text-gray-400">{new Date(post.date).toLocaleDateString('pt-BR')}</span>
                 </div>
               </article>
             </Link>
