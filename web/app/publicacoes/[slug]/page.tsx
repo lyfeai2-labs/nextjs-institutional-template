@@ -5,11 +5,13 @@ import { remark } from 'remark';
 import html from 'remark-html';
 import Link from 'next/link';
 import Image from 'next/image';
+import { features } from '../../config/features';
 
 const postsDir = path.join(process.cwd(), 'content/posts');
 console.log('[slug/page] postsDir absoluto:', postsDir);
 
 export async function generateStaticParams() {
+  if (!features.publicacoes) return [];
   if (!fs.existsSync(postsDir)) {
     console.log('[generateStaticParams] Diretorio NAO encontrado:', postsDir);
     return [];
@@ -22,6 +24,16 @@ export async function generateStaticParams() {
 }
 
 export default async function PublicacaoPage({ params }: { params: { slug: string } }) {
+  if (!features.publicacoes) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-slate-600">
+          Este módulo não está disponível no plano atual.
+        </p>
+      </main>
+    );
+  }
+
   const filePath = path.join(postsDir, `${params.slug}.md`);
   console.log('[PublicacaoPage] filePath:', filePath);
   const fileContent = fs.readFileSync(filePath, 'utf-8');
@@ -31,7 +43,7 @@ export default async function PublicacaoPage({ params }: { params: { slug: strin
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
       <Link href="/publicacoes" className="text-blue-700 hover:underline text-sm mb-8 block">
-        ← Voltar para Publicacoes
+        ← Voltar para Publicações
       </Link>
       {data.coverVideo && (
         <div className="w-full mb-8 rounded-xl overflow-hidden">
