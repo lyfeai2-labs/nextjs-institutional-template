@@ -13,6 +13,12 @@ type PostMeta = {
   coverImage: string;
 };
 
+function formatDatePtBR(dateStr?: string): string {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString('pt-BR');
+  }
 function getAllPosts(): PostMeta[] {
   const postsDir = path.join(process.cwd(), 'content/posts');
   console.log('[getAllPosts] postsDir absoluto:', postsDir);
@@ -75,7 +81,7 @@ export default function Publicacoes() {
                     {post.title}
                   </h2>
                   <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
-                            <span className="text-xs text-gray-400">{new Date(post.date).toLocaleDateString('pt-BR')}</span>
+                                      <span className="text-xs text-gray-400">{formatDatePtBR(post.date)}</span>
                 </div>
               </article>
             </Link>
