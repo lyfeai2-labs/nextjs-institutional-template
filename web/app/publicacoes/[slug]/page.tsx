@@ -10,6 +10,12 @@ import { features } from '../../config/features';
 const postsDir = path.join(process.cwd(), 'content/posts');
 console.log('[slug/page] postsDir absoluto:', postsDir);
 
+function formatDatePtBR(dateStr?: string): string {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString('pt-BR');
+  }
 export async function generateStaticParams() {
   if (!features.publicacoes) return [];
   if (!fs.existsSync(postsDir)) {
@@ -69,7 +75,7 @@ export default async function PublicacaoPage({ params }: { params: { slug: strin
         </div>
       )}
       <h1 className="text-4xl font-bold text-gray-900 mb-3">{data.title}</h1>
-              <p className="text-sm text-gray-500 mb-10">{new Date(dateStr).toLocaleDateString('pt-BR')}</p>
+                        <p className="text-sm text-gray-500 mb-10">{formatDatePtBR(dateStr)}</p>
       <article
         className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-img:rounded-xl prose-img:shadow-md"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
